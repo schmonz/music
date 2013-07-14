@@ -1,4 +1,4 @@
-\version "2.10.33"
+\version "2.16.0"
 \include "english.ly"
 #(set-default-paper-size "letter")
 
@@ -38,11 +38,11 @@ upper = \relative c' {
 	\times 2/3 {r16 b'[ e] g[-- b, e] fs[-- as, ds] f[-- af, c] e[-- g, b] e[ g, b] e[ g, b] ds[-- fs,! b] |
 	e16[-- g, b] g'[-- b, e] fs[-- as, ds] f[-- af, c] e[-- c e]} << { \stemDown \times 2/3 {c'[ e, c} \times 2/3 {ef c ef]} \times 2/3 {b'[ ef, c]} } \\ { \stemUp c'4 b8~} >> |
 	<< { \stemDown \times 2/3 {e,?16[ c e]} \times 2/3 {c'[ e, c} \times 2/3 {ef c ef]} \times 2/3 {b'[ ef, c} \times 2/3 {e c e]} \times 2/3 {c'[ e, c} \times 2/3 {f c f]} \times 2/3 {c'[ f, c]} } \\ { \stemUp b'8 c4 b c c8~ } >> |
-	<< { \stemDown \times 2/3 {fs,16 c fs c' fs, c fs c fs c fs r} } \\ { \stemUp c'8]\arpeggio c[~-> c16 b c cs] } >> #(set-octavation 1) d4~ d16 fs, b c |
+	<< { \stemDown \times 2/3 {fs,16 c fs c' fs, c fs c fs c fs r} } \\ { \stemUp c'8]\arpeggio c[~-> c16 b c cs] } >> \ottava #1 d4~ d16 fs, b c |
 	cs? e d8~ d16 cs d ds e4~_\markup{"secretly agitated"} e16 gs, cs d |
 	ds fs e8~ e16 cs d e g fs d e es fs d e |
 	fs g a as b a g fs f e~ e8 d16 cs~ cs8 |
-	<c, e c'>16-. <b e b'>-. #(set-octavation 0) r8 \clef bass <e,, g c>16-._\markup{"decelerating"} <e g b>-. r8 <g, c>-. <g b>-- r4\fermata |
+	<c, e c'>16-. <b e b'>-. \ottava #0 r8 \clef bass <e,, g c>16-._\markup{"decelerating"} <e g b>-. r8 <g, c>-. <g b>-- r4\fermata |
 	
 	% fugato
 	\mark \default
@@ -201,9 +201,9 @@ lower = \relative c {
 
 pedal = {
 	% withpedal = #(make-dynamic-script "with pedal")
-	s8\sustainDown fs' d fs fs, fs' fs,\sustainUp\sustainDown fs' |
-	b,8\sustainUp\sustainDown fs' e\sustainUp\sustainDown g cs,\sustainUp\sustainDown a' b,\sustainUp\sustainDown e\sustainUp |
-	s2\sustainDown s2\sustainUp
+	s8\sustainOn fs' d fs fs, fs' fs,\sustainOff\sustainOn fs' |
+	b,8\sustainOff\sustainOn fs' e\sustainOff\sustainOn g cs,\sustainOff\sustainOn a' b,\sustainOff\sustainOn e\sustainOff |
+	s2\sustainOn s2\sustainOff
 	% s1\withpedal
 }
 
@@ -220,25 +220,7 @@ pedal = {
 		\new Dynamics = "pedal" \pedal
 	>>
 	\layout {
-		\context {
-			\type "Engraver_group"
-			\name Dynamics
-			\alias Voice % So that \cresc works, for example.
-			\consists "Output_property_engraver"
-			\override VerticalAxisGroup #'minimum-Y-extent = #'(-1 . 1)
-			pedalSustainStrings = #'("Ped." "*Ped." "*")
-			pedalUnaCordaStrings = #'("una corda" "" "tre corde")
-			\consists "Piano_pedal_engraver"
-			\consists "Script_engraver"
-			\consists "Dynamic_engraver"
-			\consists "Text_engraver"
-			\override TextScript #'font-size = #2
-			\override TextScript #'font-shape = #'italic
-			\override DynamicText #'extra-offset = #'(0 . 2.5)
-			\override Hairpin #'extra-offset = #'(0 . 2.5)
-			\consists "Skip_event_swallow_translator"
-			\consists "Axis_group_engraver"
-		}
+		% [Convert-ly] The Dynamics context is now included by default.
 		\context {
 			\PianoStaff
 			\accepts Dynamics
