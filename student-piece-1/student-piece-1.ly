@@ -1,4 +1,4 @@
-\version "2.17.97"
+\version "2.24.0"
 \include "english.ly"
 #(set-default-paper-size "letter")
 
@@ -14,7 +14,7 @@
 
 upper = \relative c' {
 	\clef treble
-	\override Staff.TimeSignature.style = #'()
+	\override Staff.TimeSignature.style = #'numbered
 	\time 4/4
 	\key b \minor
 	\tempo 4 = 56
@@ -137,7 +137,7 @@ dynamics = {
 
 lower = \relative c {
 	\clef bass
-	\override Staff.TimeSignature.style = #'()
+	\override Staff.TimeSignature.style = #'numbered
 	\time 4/4
 	\key b \minor
 	\tempo 4 = 56
@@ -211,7 +211,7 @@ pedal = {
 % showLastLength = R1*5
 \score {
 	\new PianoStaff <<
-		% \set Score.markFormatter = #format-mark-box-numbers
+		% \set Score.rehearsalMarkFormatter = #format-mark-box-numbers
 		\set PianoStaff.connectArpeggios = ##t
 		\set PianoStaff.followVoice = ##t
 		\new Staff = "upper" \upper
